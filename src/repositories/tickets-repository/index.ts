@@ -58,6 +58,14 @@ async function ticketProcessPayment(ticketId: number) {
   });
 }
 
+async function findTicketTypeById(id: number) {
+  return prisma.ticketType.findUnique({
+    where: {
+      id: id,
+    }
+  });
+}
+
 export default {
   findTicketTypes,
   findTicketByEnrollmentId,
@@ -65,4 +73,5 @@ export default {
   findTickeyById,
   findTickeWithTypeById,
   ticketProcessPayment,
+  findTicketTypeById,
 };
