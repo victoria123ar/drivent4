@@ -4,8 +4,4 @@ node_modules
 !.env.example
 yarn.lock
 .vscode
-<<<<<<< HEAD
 coverage
-=======
-coverage
->>>>>>> cb63624 (renamed files)

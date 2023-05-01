@@ -37,9 +37,9 @@ async function postBooking(userId: number, roomId: number) {
   if (ticket.status !== 'PAID') throw forbiddenError();
 
   const ticketType = await ticketsRepository.findTicketTypeById(ticket.ticketTypeId);
+  if (ticketType.isRemote || !ticketType.includesHotel) throw forbiddenError();
 
   const room = await roomRepository.getRoomById(roomId);
-  if (ticketType.isRemote || !ticketType.includesHotel) throw forbiddenError();
   if (!room) throw notFoundError();
   if (room.Booking.length === room.capacity) throw forbiddenError();
 
@@ -56,9 +56,9 @@ async function updateBooking(userId: number, roomId: number, bookingId: number) 
   if (ticket.status !== 'PAID') throw forbiddenError();
 
   const ticketType = await ticketsRepository.findTicketTypeById(ticket.ticketTypeId);
-
+  if (ticketType.isRemote || !ticketType.includesHotel) throw forbiddenError();
+  
   const room = await roomRepository.getRoomById(roomId);
-  if (ticketType.isRemote || !ticketType.includesHotel) throw badRequest();
   if (!room) throw notFoundError();
   if (room.Booking.length === room.capacity) throw forbiddenError();
 
