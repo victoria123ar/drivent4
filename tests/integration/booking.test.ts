@@ -303,8 +303,6 @@ describe("PUT /booking/:bookingId", () => {
             const createdBooking = await createBookingWithRoomId(createdRoom.id, user.id)
             const response = await server.put(`/booking/${createdBooking.id}`).set("Authorization", `Bearer ${token}`).send({ roomId: createdRoom2.id })
 
-            console.log(response.body)
-
             expect(response.status).toBe(200)
             expect(response.body).toEqual({ bookingId: createdBooking.id })
         })
