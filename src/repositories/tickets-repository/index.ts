@@ -62,7 +62,7 @@ async function findTicketTypeById(id: number) {
   return prisma.ticketType.findUnique({
     where: {
       id: id,
-    }
+    },
   });
 }
 

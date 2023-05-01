@@ -1,13 +1,14 @@
-import { prisma } from "@/config";
+import { prisma } from '@/config';
 
-async function getRoomById(roomId: number){
-    return prisma.room.findUnique({
-        where: {id: roomId}, include: {Booking: true}
-    });
+async function getRoomById(roomId: number) {
+  return prisma.room.findUnique({
+    where: { id: roomId },
+    include: { Booking: true },
+  });
 }
 
 const roomRepository = {
-    getRoomById,
-}
+  getRoomById,
+};
 
 export default roomRepository;
