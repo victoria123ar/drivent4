@@ -1,4 +1,4 @@
-import { notFoundError, forbiddenError } from '@/errors';
+import { notFoundError, forbiddenError, badRequest } from '@/errors';
 import enrollmentRepository from '@/repositories/enrollment-repository';
 import ticketsRepository from '@/repositories/tickets-repository';
 import bookingRepository from '@/repositories/bookings-repository';
@@ -9,7 +9,7 @@ async function getBooking(userId: number) {
   if (!enrollment) throw notFoundError();
 
   const ticket = await ticketsRepository.findTicketByEnrollmentId(enrollment.id);
-  if (!ticket) throw forbiddenError();
+  if (!ticket) throw notFoundError();
 
   const booking = await bookingRepository.getBooking(userId);
   if (!booking) throw notFoundError();
@@ -33,7 +33,7 @@ async function postBooking(userId: number, roomId: number) {
   if (!enrollment) throw notFoundError();
 
   const ticket = await ticketsRepository.findTicketByEnrollmentId(enrollment.id);
-  if (!ticket) throw forbiddenError();
+  if (!ticket) throw notFoundError();
   if (ticket.status !== 'PAID') throw forbiddenError();
 
   const ticketType = await ticketsRepository.findTicketTypeById(ticket.ticketTypeId);
@@ -58,7 +58,7 @@ async function updateBooking(userId: number, roomId: number, bookingId: number) 
   const ticketType = await ticketsRepository.findTicketTypeById(ticket.ticketTypeId);
 
   const room = await roomRepository.getRoomById(roomId);
-  if (ticketType.isRemote || !ticketType.includesHotel) throw forbiddenError();
+  if (ticketType.isRemote || !ticketType.includesHotel) throw badRequest();
   if (!room) throw notFoundError();
   if (room.Booking.length === room.capacity) throw forbiddenError();
 

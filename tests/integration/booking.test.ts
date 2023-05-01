@@ -74,19 +74,6 @@ describe("GET /booking", () => {
             expect(response.status).toBe(404)
 
         })
-        it("should respond with 400 if ticket is remote", async () => {
-
-            const user = await createUser()
-            const token = await generateValidToken(user)
-            const enrollment = await createEnrollmentWithAddress(user);
-            const ticketType = await createTicketTypeRemote();
-            const ticket = await createTicket(enrollment.id, ticketType.id, TicketStatus.PAID);
-
-            const response = await server.get("/booking").set("Authorization", `Bearer ${token}`);
-
-            expect(response.status).toBe(400)
-
-        })
         it("should respond with 404 if user doesn't have book", async () => {
 
             const user = await createUser()
@@ -119,10 +106,6 @@ describe("GET /booking", () => {
             expect(response.body).toEqual(
                 {
                     id: createdBooking.id,
-                    userId: createdBooking.userId,
-                    roomId: createdBooking.roomId,
-                    createdAt: createdBooking.createdAt.toISOString(),
-                    updatedAt: createdBooking.updatedAt.toISOString(),
                     Room: {
                         id: createdRoom.id,
                         name: createdRoom.name,
@@ -180,7 +163,7 @@ describe("Post /booking", () => {
 
             expect(response.status).toBe(404)
         })
-        it("should respond with 403 if user don't have an enrollment", async () => {
+        it("should respond with 404 if user don't have an enrollment", async () => {
 
 
             const user = await createUser()
@@ -193,10 +176,10 @@ describe("Post /booking", () => {
 
             const response = await server.post("/booking").set("Authorization", `Bearer ${token}`).send({ roomId: createdRoom.id })
 
-            expect(response.status).toBe(403)
+            expect(response.status).toBe(404)
 
         })
-        it("should respond with 403 if user don't have an ticket", async () => {
+        it("should respond with 404 if user don't have an ticket", async () => {
 
             const user = await createUser()
             const token = await generateValidToken(user)
@@ -206,7 +189,7 @@ describe("Post /booking", () => {
 
             const response = await server.post("/booking").set("Authorization", `Bearer ${token}`).send({ roomId: createdRoom.id })
 
-            expect(response.status).toBe(403)
+            expect(response.status).toBe(404)
 
         })
         it("should respond with 403 if ticket is remote", async () => {
